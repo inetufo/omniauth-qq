@@ -60,7 +60,6 @@ module OmniAuth
               :access_token => access_token.token
           }, :parse => :json).parsed
         end
-
       end
     end
   end
