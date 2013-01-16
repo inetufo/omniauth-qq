@@ -5,17 +5,17 @@ module OmniAuth
   module Strategies
     class Tqq2 < OmniAuth::Strategies::OAuth2
       option :name, 'tqq2'
-      option :sign_in, true
 
-      def initialize(*args)
-        super
-        # taken from https://github.com/intridea/omniauth/blob/0-3-stable/oa-oauth/lib/omniauth/strategies/oauth/tqq.rb#L15-24
-        options.client_options = {
-            :site => 'https://open.t.qq.com',
-            :authorize_url => '/cgi-bin/oauth2/authorize',
-            :token_url => "/cgi-bin/oauth2/access_token"
-        }
-      end
+      # taken from https://github.com/intridea/omniauth/blob/0-3-stable/oa-oauth/lib/omniauth/strategies/oauth/tqq.rb#L15-24
+      options.client_options = {
+          :site => 'https://open.t.qq.com',
+          :authorize_url => '/cgi-bin/oauth2/authorize',
+          :token_url => "/cgi-bin/oauth2/access_token"
+      }
+        
+      option :token_params, {
+        :parse => :json,
+      }
 
       uid do
         @uid ||= begin
