@@ -12,8 +12,8 @@ module OmniAuth
         # taken from https://github.com/intridea/omniauth/blob/0-3-stable/oa-oauth/lib/omniauth/strategies/oauth/tqq.rb#L15-24
         options.client_options = {
             :site => 'https://open.t.qq.com/cgi-bin',
-            :authorize_url => 'https://open.t.qq.com/cgi-bin/oauth2/authorize',
-            :token_url => "https://open.t.qq.com/cgi-bin/oauth2/access_token"
+            :authorize_url => '/oauth2/authorize',
+            :token_url => "/oauth2/access_token"
         }
       end
 
