@@ -1,32 +1,25 @@
 require 'omniauth/strategies/oauth2'
-require 'multi_json'
 
 module OmniAuth
   module Strategies
     class Tqq2 < OmniAuth::Strategies::OAuth2
       option :name, 'tqq2'
-
-      # taken from https://github.com/intridea/omniauth/blob/0-3-stable/oa-oauth/lib/omniauth/strategies/oauth/tqq.rb#L15-24
       options.client_options = {
           :site => 'https://open.t.qq.com',
           :authorize_url => '/cgi-bin/oauth2/authorize',
           :token_url => "/cgi-bin/oauth2/access_token"
       }
+
+      def request_phase
+        super
+      end
         
       option :token_params, {
         :parse => :json,
       }
 
       uid do
-        @uid ||= begin
-          access_token.options[:mode] = :query
-          access_token.options[:param_name] = :access_token
-          # Response Example: "callback( {\"client_id\":\"11111\",\"openid\":\"000000FFFF\"} );\n"
-          response = access_token.get('/oauth2.0/me')
-          #TODO handle error case
-          matched = response.body.match(/"openid":"(?<openid>\w+)"/)
-          matched[:openid]
-        end
+        raw_info['data']['openid']
       end
 
       info do
@@ -51,12 +44,12 @@ module OmniAuth
 
       def raw_info
         @raw_info ||= begin
-                        #TODO handle error case
-                        #TODO make info request url configurable
-          client.request(:get, "https://open.t.qq.com/api/user/infos (", :params => {
-              :format => :json,
+          client.request(:get, "https://open.t.qq.com/api/user/info (", :params => {
+             :format => :json, 
               :openid => uid,
               :oauth_consumer_key => options[:client_id],
+              :oauth_version => '2.a',
+              :clientip => request.remote_ip,
               :access_token => access_token.token
           }, :parse => :json).parsed
         end
