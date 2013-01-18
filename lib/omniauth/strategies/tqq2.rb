@@ -1,4 +1,4 @@
-require 'omniauth/strategies/oauth2'
+require 'omniauth-oauth2'
 
 module OmniAuth
   module Strategies
@@ -72,6 +72,3 @@ module OmniAuth
     end
   end
 end
-
-
-OmniAuth.config.add_camelization('tqq2', 'Tqq2')
